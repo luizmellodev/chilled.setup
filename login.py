@@ -1,40 +1,56 @@
-import os  # importa o sistema
+from os import error
+import sys # importa o sistema
+from typing import KeysView  
 from src.verify import *  # Baixa os arquivos para o selenium
 from src.browser import *
 import time
 from getpass import getpass
+from dotenv import load_dotenv
 
 
-profile = input('Informe o nome de usuário do instagram (i.e @ladygaga)\n\n')
-limit = input('Informe o número de usuários para seguir (i.e 5)\n\n')
-filename = input(
-    'Informe o nome do arquivo para salvar os dados (i.e Follower1\n\n')
+# profile = input('Informe o nome de usuário do instagram (i.e @ladygaga)\n\n')
+# limit = input('Informe o número de usuários para seguir (i.e 5)\n\n')
+# filename = input(
+#     'Informe o nome do arquivo para salvar os dados (i.e Follower1\n\n')
 
-login = input('Informe o seu login do Instagram')
-password = getpass('Informe a sua senha do Instagram')
+class Login():
+    def loginUser():
+        load_dotenv()
+        login = os.getenv('LOGIN')
+        password = os.getenv('PASSWORD')
+        try:
+            GET(f'/html/body/div[1]/section/main/article/div[2]/div[1]/div/form/div/div[1]/div/label/input').send_keys(f'{login}')
+            GET(f'/html/body/div[1]/section/main/article/div[2]/div[1]/div/form/div/div[2]/div/label/input').send_keys(f'{password}')
+            time.sleep(2)
+            CLICK('/html/body/div[1]/section/main/article/div[2]/div[1]/div/form/div/div[3]')
+        except:
+            br.close()
+            print_exc()
 
-results = []
+    def saveInfo():
+        if(WAIT_GET('/html/body/div[1]/section/main/div/div/div/div/button')):
+            CLICK('/html/body/div[1]/section/main/div/div/div/section/div/button')
 
-try:
-        login = ID('/html/body/div[1]/section/main/div/article/div/div[1]/div/form/div/div[1]/div/label/input')
-        login.send_keys(Keys.CONTROL, "a")
-        login.send_keys(login)
-
-        password = ID('/html/body/div[1]/section/main/div/article/div/div[1]/div/form/div/div[2]/div/label/input')
-        password.send_keys(Keys.CONTROL, "a")
-        password.send_keys(password)
-        time.sleep(8)
-        CLICK('/html/body/div[1]/section/main/div/article/div/div[1]/div/form/div/div[3]/button')
-except:
-    print('Erro ao tentar fazer o login automático')
-
-    # login /html/body/div[1]/section/main/div/article/div/div[1]/div/form/div/div[1]/div/label/input
-    # senha /html/body/div[1]/section/main/div/article/div/div[1]/div/form/div/div[2]/div/label/input
-    # botao /html/body/div[1]/section/main/div/article/div/div[1]/div/form/div/div[3]/button
-
-
+    def quitChrome():
+        br.close()
+        br.quit()
 
 
+    br = GLOBAL_BR
+    # Realiza a busca
+    br.get(f'https://www.instagram.com/')
+    time.sleep(2)
+    loginUser()
+    try:
+        saveInfo()
+    except:
+        pass
+    quitChrome()
+
+
+# login /html/body/div[1]/section/main/div/article/div/div[1]/div/form/div/div[1]/div/label/input
+# senha /html/body/div[1]/section/main/div/article/div/div[1]/div/form/div/div[2]/div/label/input
+# botao /html/body/div[1]/section/main/div/article/div/div[1]/div/form/div/div[3]/button
 
 # # Faz a criação da pasta resultados
 # dir_path = os.path.join('./usuarios', filename)
