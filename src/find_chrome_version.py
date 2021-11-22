@@ -5,23 +5,23 @@ import sys
 
 cur_os = sys.platform.lower()
 
-if "win" in cur_os: ## win32 || "cygwin"
-	user_name = os.getlogin()
+# if "win" in cur_os: ## win32 || "cygwin"
+# 	user_name = os.getlogin()
 
-	path = os.path.sep.join("C:|Users|{}|AppData|Local|Google|Chrome|User Data".split("|"))
+# 	path = os.path.sep.join("C:|Users|{}|AppData|Local|Google|Chrome|User Data".split("|"))
 
-	version_file = "Local State"
+# 	version_file = "Local State"
 
-	true  = True
-	false = False
+# 	true  = True
+# 	false = Falsec
 
-	f = open(os.path.join(path.format(user_name),version_file),'r', errors='ignore')
-	d = eval(f.readline())
-	f.close()
+# 	f = open(os.path.join(path.format(user_name),version_file),'r', errors='ignore')
+# 	d = eval(f.readline())
+# 	f.close()
 
-	version = d["variations_permanent_consistency_country"][0]
+# 	version = d["variations_permanent_consistency_country"][0]
 
-elif "linux" in cur_os: ## linux
+if "linux" in cur_os: ## linux
 	version = os.popen('google-chrome --product-version').read()
 
 else: ## Darwin
