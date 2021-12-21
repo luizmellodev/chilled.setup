@@ -14,7 +14,9 @@ from dotenv import load_dotenv
 #     'Informe o nome do arquivo para salvar os dados (i.e Follower1\n\n')
 
 class Login():
-    def loginUser():
+    br = GLOBAL_BR
+
+    def loginUser(br):
         load_dotenv()
         login = os.getenv('LOGIN')
         password = os.getenv('PASSWORD')
@@ -31,21 +33,27 @@ class Login():
         if(WAIT_GET('/html/body/div[1]/section/main/div/div/div/div/button')):
             CLICK('/html/body/div[1]/section/main/div/div/div/section/div/button')
 
-    def quitChrome():
-        br.close()
+    def turnNotifications():
+        if(WAIT_GET('/html/body/div[5]/div/div/div/div[3]/button[2]')):
+            CLICK('/html/body/div[5]/div/div/div/div[3]/button[2]')
+
+    def quitChrome(br):
         br.quit()
+        try:
+            br.close()
+        except:
+            pass
 
-
-    br = GLOBAL_BR
     # Realiza a busca
     br.get(f'https://www.instagram.com/')
     time.sleep(2)
-    loginUser()
+    loginUser(br)
     try:
         saveInfo()
+        time.sleep(3)
+        turnNotifications()
     except:
         pass
-    quitChrome()
 
 
 # login /html/body/div[1]/section/main/div/article/div/div[1]/div/form/div/div[1]/div/label/input
